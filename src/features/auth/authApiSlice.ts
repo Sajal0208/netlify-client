@@ -12,9 +12,11 @@ interface IRegisterCredentials {
 }
 
 interface IUser {
-  id: number;
-  email: string;
-  username: string;
+  user: {
+    id: number;
+    email: string;
+    username: string;
+  };
 }
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -36,8 +38,18 @@ export const authApiSlice = apiSlice.injectEndpoints({
     getMe: builder.query<IUser, void>({
       query: () => "/auth/me",
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetMeQuery } =
-  authApiSlice;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetMeQuery,
+  useLogoutMutation,
+} = authApiSlice;

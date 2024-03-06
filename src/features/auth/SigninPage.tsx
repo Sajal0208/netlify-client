@@ -75,7 +75,7 @@ const SigninPage = () => {
   }
 
   return (
-    <div className="flex flex-row justify-center items-center w-full min-h-screen">
+    <div className="flex flex-row justify-center items-center w-full h-full">
       <Card className="flex flex-col items-center justify-center w-[450px] p-10">
         <img src={'https://upload.wikimedia.org/wikipedia/commons/2/2a/Blinkit-yellow-rounded.svg'} className='w-[60px] h-[60px]' />
         <h1 className="text-2xl font-bold mt-4">India's last minute app</h1>

@@ -8,6 +8,7 @@ import Layout from './components/Layout/Layout';
 import RequireAuth from './features/auth/RequireAuth';
 import DashboardPage from './pages/DashboardPage';
 import SignupPage from './features/auth/SignupPage';
+import Logout from './features/auth/Logout';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         {/* Private Routes */}
         <Route element={<RequireAuth />}>
           <Route path='/dashboard' element={<DashboardPage />} />
+          <Route path="/logout" element={<Logout />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Route>

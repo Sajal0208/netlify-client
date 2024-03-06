@@ -1,9 +1,77 @@
+import { Link } from "react-router-dom"
 import { useGetMeQuery } from "../../features/auth/authApiSlice"
+import { useEffect } from "react"
+import { Button } from "../ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "../ui/dropdown"
+
 
 const Header = () => {
-    const { data } = useGetMeQuery()
+    const { data, isLoading, isFetching } = useGetMeQuery()
+    const { user } = data || {}
+
+    useEffect(() => {
+    }, [user])
+
+    if (isLoading || isFetching) {
+        return <div>Loading...</div>
+    }
+
     return (
-        <div>
+        <div className="flex flex-row text-white  justify-between items-center">
+            <div className="flex flex-row gap-x-4 items-center justify-center">
+                <Link to='/'>
+                    <img width={25} height={25} src="/white_circle.svg" alt="White Circle" />
+                </Link>
+                <p>
+                    /
+                </p>
+                <p className='gap-x-2 flex flex-row items-center '>
+                    <span>
+                        <img width={25} height={25} src="/gradient_triangle.svg" alt="White Circle" />
+                    </span>
+                    <span>
+                        {data?.user.username}
+                    </span>
+                </p>
+                {data?.user?.username ? <Button className='text-white' variant={'link'}>
+                    <Link to='/deploy'>
+                        Deploy
+                    </Link>
+                </Button> : <></>}
+            </div>
+            <div className="flex flex-row gap-x-4 items-center justify-center">
+                {!data?.user?.username ? <>
+                    <Button variant={'default'} className="bg-white text-black hover:bg-gray-900 hover:text-white">
+                        <Link to='/signin'>
+                            Log In
+                        </Link>
+                    </Button>
+                    <Button variant={'default'} className="text-white bg-gray-900  hover:bg-white hover:text-black">
+                        <Link to='/signup'>
+                            Register
+                        </Link>
+                    </Button>
+                </> : <>
+                    <Button className="text-white" variant={'link'}>
+                        <Link to='/profile'>
+                            My Account
+                        </Link>
+                    </Button>
+                    <Button variant={'default'} className="bg-white text-black hover:bg-gray-300">
+                        <Link to='/logout'>
+                            Log Out
+                        </Link>
+                    </Button>
+                </>}
+
+            </div>
 
         </div>
     )
