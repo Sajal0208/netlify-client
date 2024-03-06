@@ -2,22 +2,15 @@ import { Link } from "react-router-dom"
 import { useGetMeQuery } from "../../features/auth/authApiSlice"
 import { useEffect } from "react"
 import { Button } from "../ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "../ui/dropdown"
+import { selectCurrentUser } from "../../features/auth/authSlice"
+import { useSelector } from "react-redux";
 
 
 const Header = () => {
     const { data, isLoading, isFetching } = useGetMeQuery()
-    const { user } = data || {}
-
-    useEffect(() => {
-    }, [user])
+    const user = useSelector(selectCurrentUser)
+    // const { user } = data || {}
+    const { username } = user || {}
 
     if (isLoading || isFetching) {
         return <div>Loading...</div>
@@ -36,18 +29,18 @@ const Header = () => {
                     <span>
                         <img width={25} height={25} src="/gradient_triangle.svg" alt="White Circle" />
                     </span>
-                    <span>
+                    {username ? <span>
                         {data?.user.username}
-                    </span>
+                    </span> : <></>}
                 </p>
-                {data?.user?.username ? <Button className='text-white' variant={'link'}>
+                {username ? <Button className='text-white' variant={'link'}>
                     <Link to='/deploy'>
                         Deploy
                     </Link>
                 </Button> : <></>}
             </div>
             <div className="flex flex-row gap-x-4 items-center justify-center">
-                {!data?.user?.username ? <>
+                {!username ? <>
                     <Button variant={'default'} className="bg-white text-black hover:bg-gray-900 hover:text-white">
                         <Link to='/signin'>
                             Log In
