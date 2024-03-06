@@ -1,15 +1,16 @@
-import { useRouteError } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useRouteError } from "react-router-dom";
 
 export default function ErrorPage() {
-  const error: any = useRouteError();
-  console.error(error);
+  useEffect(() => {
 
+  }, [])
   return (
     <div>
       <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
+      <p>Page not found</p>
       <p>
-        <i>{error.statusText || error.message}</i>
+        <Link to="/">Go back to the homepage</Link>
       </p>
     </div>
   );

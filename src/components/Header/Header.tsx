@@ -1,8 +1,11 @@
-import React from 'react'
+import { useGetMeQuery } from "../../features/auth/authApiSlice"
 
 const Header = () => {
+    const { data } = useGetMeQuery()
     return (
-        <div>Header</div>
+        <div>
+
+        </div>
     )
 }
 

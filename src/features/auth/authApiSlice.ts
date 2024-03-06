@@ -11,8 +11,14 @@ interface IRegisterCredentials {
   password: string;
 }
 
+interface IUser {
+  id: number;
+  email: string;
+  username: string;
+}
+
 export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder: any) => ({
+  endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials: ILoginCredentials) => ({
         url: "/auth/login",
@@ -27,7 +33,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+    getMe: builder.query<IUser, void>({
+      query: () => "/auth/me",
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApiSlice;
+export const { useLoginMutation, useRegisterMutation, useGetMeQuery } =
+  authApiSlice;

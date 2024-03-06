@@ -25,13 +25,18 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
-  let result = await baseQuery(args, api, extraOptions);
+  let result: any = await baseQuery(args, api, extraOptions);
   console.log(result);
-  if (result?.error?.status === 403) {
+  if (result?.error?.originalStatus === 403) {
     console.log("sending refresh token");
     // send refresh token to get new access token
-    const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
+    const refreshResult: any = await baseQuery(
+      "/auth/refresh",
+      api,
+      extraOptions
+    );
     console.log(refreshResult);
+    localStorage.setItem("token", refreshResult?.data?.token);
     if (refreshResult?.data) {
       const user = api.getState().auth.user;
       // store the new token
@@ -40,6 +45,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logOut({}));
+      localStorage.removeItem("token");
     }
   }
   return result;

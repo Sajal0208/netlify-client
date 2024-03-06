@@ -5,7 +5,7 @@ import { Input } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
 import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
-import { useLoginMutation } from './authApiSlice'
+import { useLoginMutation, useGetMeQuery } from './authApiSlice'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 

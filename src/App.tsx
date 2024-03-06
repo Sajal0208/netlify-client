@@ -4,7 +4,6 @@ import HomePage from './pages/HomePage';
 import SigninPage from './features/auth/SigninPage';
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import Header from './components/Header/Header';
 import Layout from './components/Layout/Layout';
 import RequireAuth from './features/auth/RequireAuth';
 import DashboardPage from './pages/DashboardPage';
@@ -20,8 +19,9 @@ function App() {
         <Route path='/signup' element={<SignupPage />} />
         {/* Private Routes */}
         <Route element={<RequireAuth />}>
-          <Route path='dashboard' element={<DashboardPage />} />
+          <Route path='/dashboard' element={<DashboardPage />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Route>
     </Routes>
   );
