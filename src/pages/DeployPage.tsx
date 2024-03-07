@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { Input } from '../components/ui/input'
@@ -6,12 +7,44 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import axios from 'axios'
 import RepoList from '../components/Deploy/RepoList'
+import { MultiStepLoader } from '../components/ui/multi-step-loader'
+
+
+const loadingStates = [
+    {
+        text: "Buying a condo",
+    },
+    {
+        text: "Travelling in a flight",
+    },
+    {
+        text: "Meeting Tyler Durden",
+    },
+    {
+        text: "He makes soap",
+    },
+    {
+        text: "We goto a bar",
+    },
+    {
+        text: "Start a fight",
+    },
+    {
+        text: "We like it",
+    },
+    {
+        text: "Welcome to F**** C***",
+    },
+];
+
+
 
 const DeployPage = () => {
     const [githubUsername, setGithubUsername] = useState('')
     const [githubConnectionStatus, setGithubConnectionStatus] = useState(false)
     const [loading, setLoading] = useState(false)
     const [repos, setRepos] = useState([])
+    const [importing, setImporting] = useState(false)
 
     const fetchRepos = async () => {
         setLoading(true)
@@ -28,13 +61,22 @@ const DeployPage = () => {
         setLoading(false)
     }
 
-    const onImport = (url: string) => {
+    const delay = async (ms: number) => {
+        return new Promise((resolve) =>
+            setTimeout(resolve, ms));
+    };
+
+    const onImport = async (url: string) => {
+        setImporting(true);
         console.log(url)
+
+        await delay(2500);
+        setImporting(false);
     }
 
     return (
-        <div className='mt-10 p-10 mx-20 text-gray-500 w-[600px]'>
-            <div className='text-gray-500'>
+        <div className='mt-10 p-10 mx-20 text-gray-500'>
+            <div className='text-gray-500  w-[600px]'>
                 <h1 className='text-gray-100 text-3xl'>Let's Build Something New</h1>
                 <p className='text-sm mt-1'> To deploy a new Project, import an existing Git Repository or paste an existing Github Repository URL</p>
             </div>
@@ -61,9 +103,12 @@ const DeployPage = () => {
                         </div>
                     </TabsContent>
                 </Tabs>
-
             </div>
-        </div>
+            {importing && <div className="w-full h-[60vh] flex items-center justify-center">
+                {/* Core Loader Modal */}
+                <MultiStepLoader loadingStates={loadingStates} loading={importing} duration={2500} />
+            </div>}
+        </div >
     )
 }
 
