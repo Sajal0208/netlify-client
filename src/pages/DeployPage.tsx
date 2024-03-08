@@ -9,7 +9,6 @@ import axios from 'axios'
 import RepoList from '../components/Deploy/RepoList'
 import { MultiStepLoader } from '../components/ui/multi-step-loader'
 
-
 const loadingStates = [
     {
         text: "Buying a condo",
@@ -36,8 +35,6 @@ const loadingStates = [
         text: "Welcome to F**** C***",
     },
 ];
-
-
 
 const DeployPage = () => {
     const [githubUsername, setGithubUsername] = useState('')

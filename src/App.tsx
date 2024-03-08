@@ -10,6 +10,7 @@ import DashboardPage from './pages/DashboardPage';
 import SignupPage from './features/auth/SignupPage';
 import Logout from './features/auth/Logout';
 import DeployPage from './pages/DeployPage';
+import Project from './pages/Project';
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
         <Route path='/signup' element={<SignupPage />} />
         {/* Private Routes */}
         <Route element={<RequireAuth />}>
-          <Route path='/dashboard' element={<DashboardPage />} />
+          <Route path='/dashboard' element={<DashboardPage />}>
+          </Route>
+          <Route path='/dashboard/project/:projectId' element={<Project />} />
           <Route path='/deploy' element={<DeployPage />} />
           <Route path="/logout" element={<Logout />} />
         </Route>

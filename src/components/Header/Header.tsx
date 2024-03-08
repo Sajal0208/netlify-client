@@ -33,11 +33,20 @@ const Header = () => {
                         {data?.user.username}
                     </span> : <></>}
                 </p>
-                {username ? <Button className='text-white' variant={'link'}>
-                    <Link to='/deploy'>
-                        Deploy
-                    </Link>
-                </Button> : <></>}
+                {username ? (
+                    <div>
+                        <Button className='text-white' variant={'link'}>
+                            <Link to='/deploy'>
+                                Deploy
+                            </Link>
+                        </Button>
+                        <Button className='text-white' variant={'link'}>
+                            <Link to='/dashboard'>
+                                Dashboard
+                            </Link>
+                        </Button>
+                    </div>
+                ) : null}
             </div>
             <div className="flex flex-row gap-x-4 items-center justify-center">
                 {!username ? <>

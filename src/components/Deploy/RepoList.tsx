@@ -1,7 +1,7 @@
 import { Button } from '../ui/button'
 import { ScrollArea } from "../ui/scroll"
 
-const getSvgByLanguage = (language: string) => {
+export const getSvgByLanguage = (language: string) => {
     if (!language) return './gradient_triangle.svg'
     switch (language.toLowerCase()) {
         case 'javascript':
