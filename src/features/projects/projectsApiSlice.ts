@@ -7,6 +7,7 @@ export interface IProject {
   siteName: string;
   deployedLink: string;
   deploymentStatus: string;
+  createdAt: string;
 }
 
 export const projectsApiSlice = apiSlice.injectEndpoints({
@@ -21,10 +22,12 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     createProject: builder.mutation({
-      query: (project: IProject) => ({
+      query: (url: string) => ({
         url: "/projects",
         method: "POST",
-        body: project,
+        body: {
+          repoUrl: url,
+        },
       }),
     }),
     getProjectById: builder.query<IProject, number>({

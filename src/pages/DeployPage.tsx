@@ -8,31 +8,21 @@ import { toast } from 'sonner'
 import axios from 'axios'
 import RepoList from '../components/Deploy/RepoList'
 import { MultiStepLoader } from '../components/ui/multi-step-loader'
+import { useCreateProjectMutation } from '../features/projects/projectsApiSlice'
+import { useNavigate } from 'react-router-dom'
 
 const loadingStates = [
     {
-        text: "Buying a condo",
+        text: "Creating a new project",
     },
     {
-        text: "Travelling in a flight",
+        text: "Spinning up the build server"
     },
     {
-        text: "Meeting Tyler Durden",
+        text: "Setting up the environment",
     },
     {
-        text: "He makes soap",
-    },
-    {
-        text: "We goto a bar",
-    },
-    {
-        text: "Start a fight",
-    },
-    {
-        text: "We like it",
-    },
-    {
-        text: "Welcome to F**** C***",
+        text: "Importing your github repository to our machine",
     },
 ];
 
@@ -42,8 +32,15 @@ const DeployPage = () => {
     const [loading, setLoading] = useState(false)
     const [repos, setRepos] = useState([])
     const [importing, setImporting] = useState(false)
+    const [customRepoUrl, setCustomRepoUrl] = useState('')
+    const [create] = useCreateProjectMutation()
+    const navigate = useNavigate()
 
     const fetchRepos = async () => {
+        if (githubUsername === '') {
+            toast.error('Please enter a valid Github Username')
+            return
+        }
         setLoading(true)
         try {
             const response = await axios.get(`https://api.github.com/users/${githubUsername}/repos`)
@@ -59,16 +56,27 @@ const DeployPage = () => {
     }
 
     const delay = async (ms: number) => {
-        return new Promise((resolve) =>
-            setTimeout(resolve, ms));
+        return new Promise((resolve) => setTimeout(resolve, ms));
     };
 
     const onImport = async (url: string) => {
-        setImporting(true);
         console.log(url)
-
-        await delay(2500);
-        setImporting(false);
+        if (url === '') {
+            toast.error('Please enter a valid URL');
+            return;
+        }
+        setImporting(true);
+        try {
+            const newProjectResponse = await create(url).unwrap();
+            await delay(6500);
+            toast.success('Project Imported Successfully');
+            navigate(`/dashboard/project/${newProjectResponse.projectId}`)
+        } catch (error: any) {
+            console.log("error", error)
+            toast.error(error?.data?.message);
+        } finally {
+            setImporting(false);
+        }
     }
 
     return (
@@ -95,14 +103,17 @@ const DeployPage = () => {
                     </TabsContent>
                     <TabsContent value="repoUrl">
                         <div className='mt-5'>
-                            <Input type="text" placeholder='Enter your repository URL' className='w-full p-2 bg-gray-800 text-gray-100' />
-                            <Button className='mt-2 bg-blue-500 p-2 w-full text-gray-100'>Import</Button>
+                            <Input type="text" value={customRepoUrl} onChange={(event) => {
+                                setCustomRepoUrl(event.target.value)
+                            }} placeholder='Enter your repository URL' className='w-full p-2 bg-gray-800 text-gray-100' />
+                            <Button onClick={() => {
+                                onImport(customRepoUrl)
+                            }} className='mt-2 bg-blue-500 p-2 w-full text-gray-100'>Import</Button>
                         </div>
                     </TabsContent>
                 </Tabs>
             </div>
             {importing && <div className="w-full h-[60vh] flex items-center justify-center">
-                {/* Core Loader Modal */}
                 <MultiStepLoader loadingStates={loadingStates} loading={importing} duration={2500} />
             </div>}
         </div >
