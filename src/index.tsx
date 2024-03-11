@@ -5,6 +5,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import App from './App';
+import { Toaster } from 'sonner';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,6 +18,7 @@ root.render(
         <Routes>
           <Route path="/*" element={<App />} />
         </Routes>
+        <Toaster />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
